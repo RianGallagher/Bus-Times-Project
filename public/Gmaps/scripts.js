@@ -1,8 +1,10 @@
+//myLocation
 var map;
 var infowindow;
 var myLocation;
+
 //var lat = 53.376158; //Currently Rail Park
-//var lng = -6.586436; //Change to myLocation soon
+//var lng = -6.585928; //Change to myLocation soon
 function initMap(){	//Stops Google running too early
 	getLocation();
 	console.log("Google Begins");
@@ -20,13 +22,11 @@ function getLocation(){
   }
   else{
 	  myLocation={
-		  lat: -34.397, lng: 150.644
+		  lat: 53.376158, lng: -6.585928	//3 RAIL PARK
 	  };
 	console.log("No location");
 		initMap2();
 	}
-	
-
 }
 
 function initMap2(){
@@ -40,13 +40,33 @@ function initMap2(){
       var request = {
         location: myLocation,
         radius: '500',
-        query: 'bus stop'
-      }; service.textSearch(request, callback);
+        query: 'bus_station',
+		type: 'bus_station'
+      }; service.nearbySearch(request, callback);
 	  console.log("Map Created");
     }
-
+  function callback(results, status) {
+    if (status === google.maps.places.PlacesServiceStatus.OK) {
+      for (var i = 0; i < results.length; i++) {
+        createMarker(results[i]);
+      }
+    }
+	console.log("Search Results are back");
+	var marker = new google.maps.Marker({ //Create marker at users location
+		position:myLocation,
+		map:map,
+		title:"My Location",
+		//icon:"https://mt.googleapis.com/vt/icon/name=icons/onion/SHARED-mymaps-pin-container_4x.png,icons/onion/1899-blank-shape_pin_4x.png&highlight=0288D1&scale=2.0"
+	});
+	marker.setMap(map);
+  }
  function createMarker(place) {
     var placeLoc = place.geometry.location;
+	/*var markLat=place.geometry.location.lat();
+	var markLng=place.geometry.location.lng();
+	var placeLoc={
+		lat: markLat, lng: markLng
+	  };*/
     var marker = new google.maps.Marker({
       map: map,
       position: place.geometry.location
@@ -56,23 +76,8 @@ function initMap2(){
       infowindow.setContent(place.name);
       infowindow.open(map, this);
     });
-	console.log("Markers created");
-  }
-  function callback(results, status) {
-    if (status === google.maps.places.PlacesServiceStatus.OK) {
-      for (var i = 0; i < results.length; i++) {
-        createMarker(results[i]);
-      }
-    }
-	console.log("Search Results are back");
-	var marker = new google.maps.Marker({
-		position:myLocation,
-		map:map,
-		title:"My Location",
-		icon:"https://mt.googleapis.com/vt/icon/name=icons/onion/SHARED-mymaps-pin-container_4x.png,icons/onion/1899-blank-shape_pin_4x.png&highlight=0288D1&scale=2.0"
-	});
-	marker.setMap(map);
-  }
+	console.log("Marker created");
+	}
   
   function locationError(error) {
 	    switch(error.code) {
@@ -93,5 +98,11 @@ function initMap2(){
 			alert("An unknown error has occurred)");
             break;
     }
+	 myLocation={
+		  lat: 53.376158, lng: -6.585928	//3 RAIL PARK
+	  };
+	  initMap2();
 }
 
+function addTransitLayer(){ var transitLayer = new google.maps.TransitLayer();
+transitLayer.setMap(map);}
