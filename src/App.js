@@ -1,10 +1,9 @@
-import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
+import React from 'react';
 import axios from 'axios';
 import './index.js';
 import * as firebase from 'firebase';
-
-
+import ReactTable from 'react-table';
+import 'react-table/react-table.css'
 
 class App extends React.Component {
   constructor(props) {
@@ -22,16 +21,6 @@ class App extends React.Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    const config = {
-      apiKey: "AIzaSyCEjs14JwhDwrnao-S_dmCqFNTEgVFQ9Qo",
-      authDomain: "dublinbusproject.firebaseapp.com",
-      databaseURL: "https://dublinbusproject.firebaseio.com",
-      projectId: "dublinbusproject",
-      storageBucket: "dublinbusproject.appspot.com",
-      messagingSenderId: "655945553210"
-  };
-  
-  firebase.initializeApp(config);
   }
 
   handleChange(event) {
@@ -42,27 +31,41 @@ class App extends React.Component {
     const results = [];
     axios.get(`https://data.dublinked.ie/cgi-bin/rtpi/realtimebusinformation?stopid=${this.state.busStopNumber}&format=json`)
     .then(res => {
-      const results = res.data.results;
+
+      //Make it read from Database instead of setting state
+      const results = res.data.results
       this.setState({ results: results });
-      console.log(this.state.results.length);
+        const rootRef = firebase.database().ref();
+        for(var i =0; i<this.state.results.length; i++){
+            rootRef.child(this.state.busStopNumber).child(i).child("duetime").set(this.state.results[i].duetime);
+            rootRef.child(this.state.busStopNumber).child(i).child("route").set(this.state.results[i].route);
+            rootRef.child(this.state.busStopNumber).child(i).child("destination").set(this.state.results[i].destination);
+            rootRef.child(this.state.busStopNumber).child(i).child("origin").set(this.state.results[i].origin);
+        }
     });
-      
-      
-      const rootRef = firebase.database().ref().child(this.state.busStopNumber);
-      for(var i =0; i<this.state.results.length; i++){
-        rootRef.child(i).child("duetime").set(this.state.results[i].duetime);
-        rootRef.child(i).child("route").set(this.state.results[i].route);
-        rootRef.child(i).child("destination").set(this.state.results[i].destination);
-        rootRef.child(i).child("origin").set(this.state.results[i].origin);
-      }
-    
+
     event.preventDefault();
-  
   
   }
   
 
   render() {
+      const columns = [{
+          Header: 'Route',
+          accessor: 'route' // String-based value accessors!
+          },
+          {
+              Header: 'Origin',
+              accessor: 'origin' // String-based value accessors!
+          },
+          {
+              Header: 'Destination',
+              accessor: 'destination' // String-based value accessors!
+          },
+          {
+              Header: 'Due In (Minutes)',
+              accessor: 'duetime' // String-based value accessors!
+          }]
     return (
       <div>
         <form onSubmit={this.handleSubmit}>
@@ -71,17 +74,14 @@ class App extends React.Component {
           <input type="text" value={this.state.busStopNumber} onChange={this.handleChange} />
           </label>
           <input type="submit" value="Go" />
-          <h1>{this.state.speed}</h1>
         </form>
-       
+        <ReactTable
+            data={this.state.results}
+            columns={columns}
+        />
       </div>
     );
   }
 }
-
-ReactDOM.render(
-  <App />,
-  document.getElementById('root')
-);
 
 export default App;
