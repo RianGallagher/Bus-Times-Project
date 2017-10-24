@@ -17,9 +17,9 @@ class App extends React.Component {
       destination: '',
       oirigin: '',
       duetime: '',
+      speed: ''
     };
-
-    // For entering bus stop numbers: https://reactjs.org/docs/forms.html
+    
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     const config = {
@@ -45,13 +45,14 @@ class App extends React.Component {
       this.setState({ results });
     });
     
-    const rootRef = firebase.database().ref();
-    for(var i =0; i<this.state.results.length; i++){
-      rootRef.child(this.state.busStopNumber).child(i).child("duetime").set(this.state.results[i].duetime);
-      rootRef.child(this.state.busStopNumber).child(i).child("route").set(this.state.results[i].route);
-      rootRef.child(this.state.busStopNumber).child(i).child("destination").set(this.state.results[i].destination);
-      rootRef.child(this.state.busStopNumber).child(i).child("origin").set(this.state.results[i].origin);
-    }
+      const rootRef = firebase.database().ref();
+      for(var i =0; i<this.state.results.length; i++){
+        rootRef.child(this.state.busStopNumber).child(i).child("duetime").set(this.state.results[i].duetime);
+        rootRef.child(this.state.busStopNumber).child(i).child("route").set(this.state.results[i].route);
+        rootRef.child(this.state.busStopNumber).child(i).child("destination").set(this.state.results[i].destination);
+        rootRef.child(this.state.busStopNumber).child(i).child("origin").set(this.state.results[i].origin);
+      }
+    
     event.preventDefault();
   
   
