@@ -16,9 +16,9 @@ class App extends React.Component {
       destination: '',
       oirigin: '',
       duetime: '',
+      speed: ''
     };
-
-    // For entering bus stop numbers: https://reactjs.org/docs/forms.html
+    
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
