@@ -19,7 +19,7 @@ class App extends React.Component {
       duetime: '',
       speed: ''
     };
-    
+
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     const config = {
@@ -37,20 +37,23 @@ class App extends React.Component {
   handleChange(event) {
     this.setState({ busStopNumber: event.target.value });
   }
-
+  //this.replaceState{(results: '')};
   handleSubmit(event) {
+    const results = [];
     axios.get(`https://data.dublinked.ie/cgi-bin/rtpi/realtimebusinformation?stopid=${this.state.busStopNumber}&format=json`)
     .then(res => {
       const results = res.data.results;
-      this.setState({ results });
+      this.setState({ results: results });
+      console.log(this.state.results.length);
     });
-    
-      const rootRef = firebase.database().ref();
+      
+      
+      const rootRef = firebase.database().ref().child(this.state.busStopNumber);
       for(var i =0; i<this.state.results.length; i++){
-        rootRef.child(this.state.busStopNumber).child(i).child("duetime").set(this.state.results[i].duetime);
-        rootRef.child(this.state.busStopNumber).child(i).child("route").set(this.state.results[i].route);
-        rootRef.child(this.state.busStopNumber).child(i).child("destination").set(this.state.results[i].destination);
-        rootRef.child(this.state.busStopNumber).child(i).child("origin").set(this.state.results[i].origin);
+        rootRef.child(i).child("duetime").set(this.state.results[i].duetime);
+        rootRef.child(i).child("route").set(this.state.results[i].route);
+        rootRef.child(i).child("destination").set(this.state.results[i].destination);
+        rootRef.child(i).child("origin").set(this.state.results[i].origin);
       }
     
     event.preventDefault();
