@@ -11,41 +11,57 @@ class App extends React.Component {
 
     this.state = {
       results: [],
-      busStopNumber: '',
+      busStopNumber: '312',
       route: '',
       destination: '',
       oirigin: '',
       duetime: '',
       speed: ''
     };
-
+    
     this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    
+   this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleChange(event) {
-    this.setState({ busStopNumber: event.target.value });
+    //this.setState({ busStopNumber: event.target.value });
+    
+    this.setState({busStopNumber : document.getElementById('stopNum').value});
+    
   }
-  //this.replaceState{(results: '')};
+
+  
+
   handleSubmit(event) {
-    const results = [];
     axios.get(`https://data.dublinked.ie/cgi-bin/rtpi/realtimebusinformation?stopid=${this.state.busStopNumber}&format=json`)
     .then(res => {
-
+      console.log(this.state.busStopNumber);
       //Make it read from Database instead of setting state
-      const results = res.data.results
-      this.setState({ results: results });
-        const rootRef = firebase.database().ref();
-        for(var i =0; i<this.state.results.length; i++){
-            rootRef.child(this.state.busStopNumber).child(i).child("duetime").set(this.state.results[i].duetime);
-            rootRef.child(this.state.busStopNumber).child(i).child("route").set(this.state.results[i].route);
-            rootRef.child(this.state.busStopNumber).child(i).child("destination").set(this.state.results[i].destination);
-            rootRef.child(this.state.busStopNumber).child(i).child("origin").set(this.state.results[i].origin);
+      const results = res.data.results;
+      //this.setState({ results: results });
+        const stopRef = firebase.database().ref().child(this.state.busStopNumber);
+        console.log(this.state.results);
+        for(var i =0; i<results.length; i++){
+            stopRef.child(i).child("duetime").set(results[i].duetime);
+            stopRef.child(i).child("route").set(results[i].route);
+            stopRef.child(i).child("destination").set(results[i].destination);
+            stopRef.child(i).child("origin").set(results[i].origin);
         }
     });
-
+    
+    this.displayTimes();
     event.preventDefault();
   
+  }
+
+  displayTimes(){
+    setTimeout(() => {
+      const stopRef = firebase.database().ref().child(this.state.busStopNumber);
+      stopRef.on('value', snapshot =>{
+          this.setState({results: snapshot.val()});
+      }); 
+    }, 600);
   }
   
 
@@ -71,9 +87,9 @@ class App extends React.Component {
         <form onSubmit={this.handleSubmit}>
           <label>
             Bus Stop Number:
-          <input type="text" value={this.state.busStopNumber} onChange={this.handleChange} />
+          <input id="stopNum" type="text" />
           </label>
-          <input type="submit" value="Go" />
+          <input type="submit" value="Go" onClick={this.handleChange}/>
         </form>
         <ReactTable
             data={this.state.results}
