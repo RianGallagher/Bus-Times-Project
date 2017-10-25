@@ -56,8 +56,7 @@ function initMap2(){
 		position:myLocation,
 		map:map,
 		title:"My Location",
-		//icon:"https://mt.googleapis.com/vt/icon/name=icons/onion/SHARED-mymaps-pin-container_4x.png,icons/onion/1899-blank-shape_pin_4x.png&highlight=0288D1&scale=2.0"
-	});
+		icon:"http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
 	marker.setMap(map);
   }
  function createMarker(place) {
