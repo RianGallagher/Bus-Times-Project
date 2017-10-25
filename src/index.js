@@ -1,8 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+
+//import Signup from './components/Signup/components/Signup';
+//import SIGNUP_PATH from './Constants';
 import './index.css';
 import App from './App';
-import registerServiceWorker from './registerServiceWorker';
+import 'normalize.css/normalize.css';
+import '@blueprintjs/core/dist/blueprint.css';
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import * as firebase from 'firebase';
 
 const config = {
@@ -14,7 +19,12 @@ const config = {
     messagingSenderId: "655945553210"
 };
 
-firebase.initializeApp(config);
+const app = firebase.initializeApp(config);
+//const facebookProvider = new firebase.auth.FacebookAuthProvider
+const googleProvider  = new firebase.auth.GoogleAuthProvider
 
-ReactDOM.render(<App />, document.getElementById('root'));
-registerServiceWorker();
+
+ReactDOM.render(<App/>
+, document.getElementById('root'));
+
+export { app, googleProvider }
