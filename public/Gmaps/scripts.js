@@ -1,3 +1,7 @@
+//When setting up the modal div run the following 2 commands
+//	google.maps.event.trigger(map, 'resize')
+//	map.setCenter(myLocation)
+
 //myLocation
 var map;
 var infowindow;
@@ -56,9 +60,15 @@ function initMap2(){
 		position:myLocation,
 		map:map,
 		title:"My Location",
+		icon:"http://maps.google.com/mapfiles/ms/icons/green-dot.png",
 		//icon:"https://mt.googleapis.com/vt/icon/name=icons/onion/SHARED-mymaps-pin-container_4x.png,icons/onion/1899-blank-shape_pin_4x.png&highlight=0288D1&scale=2.0"
 	});
 	marker.setMap(map);
+	google.maps.event.addListener(marker, 'click', function() {
+     infowindow.setContent("My Location");
+      infowindow.open(map, this);
+    });
+	createButton();
   }
  function createMarker(place) {
     var placeLoc = place.geometry.location;
@@ -77,7 +87,7 @@ function initMap2(){
       infowindow.open(map, this);
     });
 	console.log("Marker created");
-	}
+}
   
   function locationError(error) {
 	    switch(error.code) {
@@ -106,3 +116,28 @@ function initMap2(){
 
 function addTransitLayer(){ var transitLayer = new google.maps.TransitLayer();
 transitLayer.setMap(map);}
+
+function openModal(){
+	document.getElementById("modalRoot").setAttribute("style","display:block");
+	google.maps.event.trigger(map, 'resize')
+	map.setCenter(myLocation)
+}
+function closeModal(){
+	document.getElementById("modalRoot").setAttribute("style","display:none");
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target == document.getElementById("modalRoot")) {
+        closeModal();
+    }
+}
+
+function createButton(){
+	var form=document.getElementById("myForm");
+var myButton=document.createElement("button");
+myButton.setAttribute("onclick","openModal();");
+myButton.innerHTML="Bus Stops Near Me!";
+myForm.appendChild(myButton);
+	
+}

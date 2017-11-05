@@ -53,13 +53,13 @@ class App extends React.Component {
     }]
     return (
       <div>
-        <form onSubmit={this.handleSubmit}>
+        <form onSubmit={this.handleSubmit} id="myForm">
           <label>
             Bus Stop Number:
           <input type="text" value={this.state.busStopNumber} onChange={this.handleChange} />
           </label>
           <input type="submit" value="Go" />
-        </form>
+        </form>		
         <ReactTable
           data={this.state.results}
           columns={columns}
