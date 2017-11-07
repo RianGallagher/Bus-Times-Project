@@ -1,29 +1,23 @@
-import React, { Component } from 'react'
-//import PropTypes from 'prop-types'
-//import { Router }from 'react-router';
-//import { Switch, Route} from 'react-router'
-//import { SIGNUP_PATH, LOGIN_PATH } from './Constants'
-//import { Link } from 'react-router'
-import Login from './components/Login/components/Login';
-//import Signup from './components/Signup/components/Signup';
-//import Root from './containers/Root';
-import Navbar from './containers/Navbar';
+import React, { Component } from 'react';
+import { Route, Switch } from 'react-router-dom';
 
-//TODO: Inisialize routes
-export default class App extends Component {
+import Layout from './hoc/Layout/Layout';
+import Timetable from './containers/Timetable/Timetable';
+import Auth from './containers/Auth/Auth';
+
+class App extends Component {
   render () {
     return (
       <div>
-      <div>
-        <Navbar>
-      </Navbar> 
+        <Layout>
+          <Switch>
+            <Route path="/auth" component={Auth} />
+            {/* <Route path="/" exact component={Timetable} /> */}
+          </Switch>
+        </Layout>
       </div>
-      <div>
-      <Login>
-      </Login>
-      </div>
-    </div>
-
-    )
+    );
   }
 }
+
+export default App;
