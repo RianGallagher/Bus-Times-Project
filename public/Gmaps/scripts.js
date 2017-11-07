@@ -63,7 +63,7 @@ function initMap2(){
 	icon:"http://maps.google.com/mapfiles/ms/icons/blue-dot.png"})
 	marker.setMap(map);
 	google.maps.event.addListener(marker, 'click', function() {
-     infowindow.setContent("My Location");
+     infowindow.setContent("<p style=color:#000000>My Location</p>");
       infowindow.open(map, this);
     });
 	createButton();
@@ -81,7 +81,7 @@ function initMap2(){
     });
 
     google.maps.event.addListener(marker, 'click', function() {
-      infowindow.setContent(place.name);
+      infowindow.setContent("<p style=color:#000000>"+place.name+"</p>");
       infowindow.open(map, this);
     });
 	console.log("Marker created");
