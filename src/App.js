@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import  React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 import Layout from './hoc/Layout/Layout';
@@ -9,12 +9,13 @@ class App extends Component {
   render () {
     return (
       <div>
-        <Layout>
+          <Layout>
           <Switch>
             <Route path="/auth" component={Auth} />
-            {/* <Route path="/" exact component={Timetable} /> */}
+            <Route path="/" exact component={Timetable} />
           </Switch>
-        </Layout>
+          </Layout>
+        <Timetable />
       </div>
     );
   }
