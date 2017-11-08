@@ -1,0 +1,20 @@
+Integration:
+Add Gmaps	-- Css
+		-- JS
+<link rel="stylesheet" href="%PUBLIC_URL%/Gmaps/style.css">
+
+Add:
+		<div id="modalRoot">
+		<div id="modal">
+			<button id="closeModal" onclick="closeModal()"> OK! </button>
+			<div id="map"></div>
+		</div>
+		</div>
+	<script src="%PUBLIC_URL%/Gmaps/scripts.js"></script>
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAayHuExZVJfG-xzEOAFt7uij-ony5dLK8&libraries=places&callback=initMap" async defer></script>
+
+After div root in public/index.html
+
+Src/app.js
+
+Change form to <form onSubmit={this.handleSubmit} id="myForm">
