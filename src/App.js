@@ -11,7 +11,7 @@ class App extends React.Component {
 
     this.state = {
       results: [],
-      busStopNumber: '312',
+      busStopNumber: '',
       route: '',
       destination: '',
       oirigin: '',
