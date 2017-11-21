@@ -9,13 +9,12 @@ class App extends Component {
   render () {
     return (
       <div>
-          <Layout>
+           <Layout>
           <Switch>
             <Route path="/auth" component={Auth} />
-            <Route path="/" exact component={Timetable} />
+            <Route path="/" component={Timetable} />
           </Switch>
-          </Layout>
-        <Timetable />
+          </Layout> 
       </div>
     );
   }
