@@ -3,6 +3,9 @@ import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from
 import axios from 'axios';
 import ReactTable from 'react-table'
 import 'react-table/react-table.css'
+import * as firebase from 'firebase';
+import trim from 'trim';
+import replaceall from 'replaceall';
 
 import logo from './logo.svg';
 import './App.css';
@@ -50,7 +53,7 @@ class App extends Component {
         "27x": "/Your-Journey1/Timetables/All-Timetables/27x-Revised-Fares/",
         "29a": "/Your-Journey1/Timetables/All-Timetables/29a/",
         "29n": "/Your-Journey1/Timetables/All-Timetables/29n/",
-        "31/a": "/Your-Journey1/Timetables/All-Timetables/31a-1/",
+        "31a": "/Your-Journey1/Timetables/All-Timetables/31a-1/",
         "31b": "/Your-Journey1/Timetables/All-Timetables/31b21/",
         "31d": "/Your-Journey1/Timetables/All-Timetables/7d-Revised-Times2/",
         "31n": "/Your-Journey1/Timetables/All-Timetables/31n-Revised-Times/",
@@ -109,7 +112,7 @@ class App extends Component {
         "67": "/Your-Journey1/Timetables/All-Timetables/67/",
         "67n": "/Your-Journey1/Timetables/All-Timetables/67n/",
         "67x": "/Your-Journey1/Timetables/All-Timetables/67x3/",
-        "68/a": "/Your-Journey1/Timetables/All-Timetables/68-1111/",
+        "68a": "/Your-Journey1/Timetables/All-Timetables/68-1111/",
         "68x": "/Your-Journey1/Timetables/All-Timetables/68x-/",
         "69": "/Your-Journey1/Timetables/All-Timetables/69-2/",
         "69n": "/Your-Journey1/Timetables/All-Timetables/69n/",
@@ -123,9 +126,9 @@ class App extends Component {
         "77a": "/Your-Journey1/Timetables/All-Timetables/77a-1/",
         "77n": "/Your-Journey1/Timetables/All-Timetables/77n/",
         "77x": "/Your-Journey1/Timetables/All-Timetables/77x21/",
-        "79/a": "/Your-Journey1/Timetables/All-Timetables/79a/",
+        "79a": "/Your-Journey1/Timetables/All-Timetables/79a/",
         "83": "/Your-Journey1/Timetables/All-Timetables/8321/",
-        "84/a": "/Your-Journey1/Timetables/All-Timetables/84a1/",
+        "84a": "/Your-Journey1/Timetables/All-Timetables/84a1/",
         "84n": "/Your-Journey1/Timetables/All-Timetables/84n-Revised-Times1/",
         "84x": "/Your-Journey1/Timetables/All-Timetables/84x211/",
         "88n": "/Your-Journey1/Timetables/All-Timetables/88n-Revised-Times/",
@@ -201,7 +204,9 @@ class App extends Component {
   }
 
   makeCORSRequest() {
+    
     var url = `https://cors-anywhere.herokuapp.com/https://www.dublinbus.ie${this.convertBusToRoute(this.state.busRouteNumber)}/`;
+    console.log(this.state.routeEquivalentArray[0])
     var xhr = this.createCORSRequest('GET', url);
     if (!xhr) {
       throw new Error('CORS not supported');
@@ -246,7 +251,7 @@ class App extends Component {
         }
         currentCounter = counter
       }
-
+      
       fillTimesArray(weekdayTimes1);
       fillTimesArray(saturdayTimes1);
       fillTimesArray(sundayTimes1);
@@ -273,10 +278,32 @@ class App extends Component {
           "sundayTime2": sundayTimes2[i]
         });
       }
-
       this.setState({ data });
+      
+      const stopRef = firebase.database().ref().child('timetable').child(this.state.busRouteNumber);
+      for (var i = 1; i <= 2; i++) {
+        stopRef.child(i).child('heading').set(this.state.timeTableHeadings[i-1]);
+        for(var y = 0; y < longestArrayLength; y++){
+          if(i===1){
+            if(data[y].weekdayTime1!==undefined)
+            stopRef.child(i).child('weekdays').child(y).set(data[y].weekdayTime1);
+            if(data[y].saturdayTime1!==undefined)
+            stopRef.child(i).child('saturday').child(y).set(data[y].saturdayTime1);
+            if(data[y].sundayTime1!==undefined)
+            stopRef.child(i).child('sunday').child(y).set(data[y].sundayTime1);
+          }
+          else{
+            if(data[y].weekdayTime2!==undefined)
+            stopRef.child(i).child('weekdays').child(y).set(data[y].weekdayTime2);
+            if(data[y].saturdayTime2!==undefined)
+            stopRef.child(i).child('saturday').child(y).set(data[y].saturdayTime2);
+            if(data[y].sundayTime2!==undefined)
+            stopRef.child(i).child('sunday').child(y).set(data[y].sundayTime2);
+          }
+        }
+      }
 
-      console.dir(data);
+      console.log(data[0].weekdayTime1);
 
       // process the response.
     }.bind(this);
