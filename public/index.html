@@ -10,6 +10,18 @@
     -->
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
     <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
+	<link rel="stylesheet" href="node_modules/react-table/react-table.css">
+ +
+ +     <!-- CSS -->
+ +  <link rel="stylesheet" href="https://unpkg.com/react-table@latest/react-table.css">
+ +
+ +  <!-- JS -->
+ +  <script src="https://unpkg.com/react-table@latest/react-table.js"></script>
+ +
+ +  <script>
+ +    var ReactTable = window.ReactTable.default
+ +</script>
+ <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAayHuExZVJfG-xzEOAFt7uij-ony5dLK8&libraries=places&callback=initMap" async defer></script
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
@@ -20,6 +32,8 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet">
+	<script src="%PUBLIC_URL%/Google.js"></script>
+	<script src="%PUBLIC_URL%/GMaps/scripts.js"></script>
     <title>Bus Times Project</title>
   </head>
   <body>
@@ -37,5 +51,6 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+	>
   </body>
 </html>

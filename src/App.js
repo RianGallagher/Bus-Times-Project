@@ -4,6 +4,7 @@ import { Route, Switch } from 'react-router-dom';
 import Layout from './hoc/Layout/Layout';
 import Timetable from './containers/Timetable/Timetable';
 import Auth from './containers/Auth/Auth';
+import Container from './containers/Map/Container';
 
 class App extends Component {
   render () {
@@ -12,10 +13,10 @@ class App extends Component {
           <Layout>
           <Switch>
             <Route path="/auth" component={Auth} />
-            <Route path="/" exact component={Timetable} />
+			<Route path="/Map" component={Container} />
+            <Route path="/"  component={Timetable} />
           </Switch>
           </Layout>
-        <Timetable />
       </div>
     );
   }
