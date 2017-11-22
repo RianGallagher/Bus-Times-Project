@@ -1,5 +1,4 @@
 import React from 'react';
-import axios from 'axios';
 import './index.js';
 import * as firebase from 'firebase';
 import ReactTable from 'react-table';
@@ -11,7 +10,7 @@ class App extends React.Component {
 
     this.state = {
       results: [],
-      busStopNumber: '',
+      busStopNumber: "",
       route: '',
       destination: '',
       oirigin: '',
@@ -20,82 +19,103 @@ class App extends React.Component {
     };
 
     this.handleChange = this.handleChange.bind(this);
-   this.handleSubmit = this.handleSubmit.bind(this);
-   this.startTimer = this.startTimer.bind(this);
+  // this.handleSubmit = this.handleSubmit.bind(this);
+    this.displayTimes = this.displayTimes.bind(this);
   }
 
-  handleChange() {
-    //this.setState({ busStopNumber: event.target.value });
+  handleChange(event) {
+    event.preventDefault();
+    console.log("in handle change");
+    //this.setState({busStopNumber : document.getElementById('stopNum').value});
+    var num = document.getElementById('stopNum').value;
+    console.log(num);
+    this.displayTimes(num).then(res => {
+      console.log("in .then");
+      console.log(this.state.results);
+    });
     
-    this.setState({busStopNumber : document.getElementById('stopNum').value});
-    
+     
   }
 
-  startTimer(event){
-      event.preventDefault();
-      this.handleSubmit();
-      setInterval(this.handleSubmit, 10000);
-  }
-
-  handleSubmit() {
-
-    axios.get(`https://data.dublinked.ie/cgi-bin/rtpi/realtimebusinformation?stopid=${this.state.busStopNumber}&format=json`)
-        .then(res => {
-            console.log("refreshing times");
-            //Make it read from Database instead of setting state
-            const results = res.data.results;
-            //this.setState({ results: results });
-            const stopRef = firebase.database().ref().child(this.state.busStopNumber);
-            for (var i = 0; i < results.length; i++) {
-                stopRef.child(i).child("duetime").set(results[i].duetime);
-                stopRef.child(i).child("route").set(results[i].route);
-                stopRef.child(i).child("destination").set(results[i].destination);
-                stopRef.child(i).child("origin").set(results[i].origin);
-            }
-        })
-        .then(this.displayTimes());
-    }
-
-  displayTimes(){
-    //setTimeout(() => {
-      const stopRef = firebase.database().ref().child(this.state.busStopNumber);
-      stopRef.on('value', snapshot =>{
+  displayTimes(num){
+    return new Promise((resolve, reject) => {
+      const stopRef = firebase.database().ref().child("timetable").child(num);
+      stopRef.once('value', snapshot =>{
           this.setState({results: snapshot.val()});
       });
-    //}, 600);
+      resolve(this.state.results);
+    });  
+    // const stopRef = firebase.database().ref().child("timetable").child(num);
+    //   stopRef.on('value', snapshot =>{
+    //       this.setState({results: snapshot.val()});
+    //   });
+    //   setTimeout(function(){
+    //     console.log(this.state.results);
+    //   },10000);
+    //   console.log(num + " in display times");
   }
   
 
   render() {
-      const columns = [{
-          Header: 'Route',
-          accessor: 'route' // String-based value accessors!
-          },
-          {
-              Header: 'Origin',
-              accessor: 'origin' // String-based value accessors!
-          },
-          {
-              Header: 'Destination',
-              accessor: 'destination' // String-based value accessors!
-          },
-          {
-              Header: 'Due In (Minutes)',
-              accessor: 'duetime' // String-based value accessors!
-          }];
+    const columns1 = [{
+      id: 'weekdays',
+      Header: 'Weekdays',
+      accessor: 'weekdayTime1' // Custom value accessors!
+    },
+    {
+      id: 'saturdays',
+      Header: 'Saturdays',
+      accessor: 'saturdayTime1' // String-based value accessors!
+    },
+    {
+      id: 'sundays',
+      Header: 'Sundays',
+      accessor: 'sundayTime1' // String-based value accessors!
+    }]
+    const columns2 = [{
+      id: 'weekdays',
+      Header: 'Weekdays',
+      accessor: 'weekdayTime2' // Custom value accessors!
+    },
+    {
+      id: 'saturdays',
+      Header: 'Saturdays',
+      accessor: 'saturdayTime2' // String-based value accessors!
+    },
+    {
+      id: 'sundays',
+      Header: 'Sundays',
+      accessor: 'sundayTime2' // String-based value accessors!
+    }]
+  
     return (
-      <div>
-        <form onSubmit={this.startTimer}>
-          <label>
-            Bus Stop Number:
-          <input id="stopNum" type="text" />
-          </label>
-          <input type="submit" value="Go" onClick={this.handleChange}/>
-        </form>
-        <ReactTable
-            data={this.state.results}
-            columns={columns}
-        />
+    <div>
+    <form>
+      <label>
+        Bus Stop Number:
+      <input id="stopNum" type="text" />
+      </label>
+      <input type="submit" value="Go" onClick={this.handleChange}/>
+    </form>
+
+        <div id="timetable-container">
+          <div class="timetable">
+            <div class="center"><strong>heading</strong></div>
+            <ReactTable
+              data={this.state.data}
+              columns={columns1}
+              sortable={false}
+            />
+          </div>
+          <div class="timetable">
+            <div class="center"><strong>heading</strong></div>
+            <ReactTable
+              data={this.state.data}
+              columns={columns2}
+              sortable={false}
+            />
+          </div>
+        </div>
       </div>
     );
   }
