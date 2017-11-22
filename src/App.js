@@ -1,8 +1,10 @@
+
 import React from 'react';
 import './index.js';
 import * as firebase from 'firebase';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css'
+import Promise from 'promise';
 
 class App extends React.Component {
   constructor(props) {
@@ -10,50 +12,95 @@ class App extends React.Component {
 
     this.state = {
       results: [],
-      busStopNumber: "",
-      route: '',
-      destination: '',
-      oirigin: '',
-      duetime: '',
-      speed: ''
+      
     };
+
 
     this.handleChange = this.handleChange.bind(this);
   // this.handleSubmit = this.handleSubmit.bind(this);
     this.displayTimes = this.displayTimes.bind(this);
+    //this.putTimesIntoTable = this.putTimesIntoTable.bind(this);
   }
 
   handleChange(event) {
+    var temp = [-1], data = [];
     event.preventDefault();
     console.log("in handle change");
     //this.setState({busStopNumber : document.getElementById('stopNum').value});
     var num = document.getElementById('stopNum').value;
     console.log(num);
-    this.displayTimes(num).then(res => {
-      console.log("in .then");
-      console.log(this.state.results);
-    });
-    
-     
+    let myProm = new Promise(function(resolve, reject) {
+       const stopRef = firebase.database().ref().child("timetable").child(num);
+      stopRef.on('value', snapshot =>{
+          temp = [-1];
+          temp = snapshot.val();
+          
+      });
+      setTimeout(function(){
+        if (temp[0]!==-1) {
+          resolve(temp);
+        } else {
+          reject('Error');
+        }
+       },2000);
+      });
+      myProm.then((fromResolve) =>
+        // function(fromResolve) {
+        // data = fromResolve;
+        // console.log(fromResolve);
+       this.displayTimes(fromResolve)
+      ).catch(function(fromReject){
+        alert(num + " is not a bus route");
+      }) 
+      
   }
 
-  displayTimes(num){
-    return new Promise((resolve, reject) => {
-      const stopRef = firebase.database().ref().child("timetable").child(num);
-      stopRef.once('value', snapshot =>{
-          this.setState({results: snapshot.val()});
-      });
-      resolve(this.state.results);
-    });  
-    // const stopRef = firebase.database().ref().child("timetable").child(num);
-    //   stopRef.on('value', snapshot =>{
-    //       this.setState({results: snapshot.val()});
-    //   });
-    //   setTimeout(function(){
-    //     console.log(this.state.results);
-    //   },10000);
-    //   console.log(num + " in display times");
+
+  displayTimes(fromResolve){
+     var data = [];
+     console.log(fromResolve)
+    var longestArrayLength = Math.max(fromResolve[1].weekdays.length, fromResolve[1].saturday.length, fromResolve[1].sunday.length, fromResolve[2].weekdays.length, fromResolve[2].saturday.length,fromResolve[2].sunday.length);
+    for (var i = 0; i < longestArrayLength; i++) {
+
+    data.push({
+      "weekdayTime1":fromResolve[1].weekdays[i],
+      "saturdayTime1": fromResolve[1].saturday[i],
+      "sundayTime1": fromResolve[1].sunday[i],
+      "weekdayTime2": fromResolve[2].weekdays[i],
+      "saturdayTime2": fromResolve[2].saturday[i],
+      "sundayTime2": fromResolve[2].sunday[i]
+    });
   }
+
+this.setState({ data });
+
+console.dir(data);
+  }
+
+  // putTimesIntoTable() {
+  //   var data = [];
+  //   console.log(this.state.results);
+  //   // console.log(this.state.results[1].saturday);
+  //   // // Replace all mentions of the the weekdayTimes arrays below with however you're accessing data from the database
+  //   // // Afterwards, replace "this.makeCORSRequest()" in the handleSubmit() function with "this.getTimesFromDatabase()"
+
+  //   // var longestArrayLength = Math.max(this.state.results[1].weekdays.length, this.state.results[1].saturday.length, this.state.results[1].sunday.length, this.state.results[2].weekdays.length, this.state.results[2].saturday.length, this.state.results[2].sunday.length);
+  //   // for (var i = 0; i < longestArrayLength; i++) {
+
+  //   //   data.push({
+  //   //     "weekdayTime1": this.state.results[1].weekdays[i],
+  //   //     "saturdayTime1": this.state.results[1].saturday[i],
+  //   //     "sundayTime1": this.state.results[1].sunday[i],
+  //   //     "weekdayTime2": this.state.results[2].weekdays[i],
+  //   //     "saturdayTime2": this.state.results[2].saturday[i],
+  //   //     "sundayTime2": this.state.results[2].sunday[i]
+  //   //   });
+  //   // }
+
+  //   // this.setState({ data });
+
+  //   // console.dir(data);
+  // }
   
 
   render() {
