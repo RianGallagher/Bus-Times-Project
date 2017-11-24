@@ -5,3 +5,13 @@ h6 {
     color: goldenrod;
     font-family: courier new;
 }
+hr { 
+    margin-bottom: 20px;
+}
+form { 
+    margin-bottom: 20px;
+}
+label { 
+    margin: 0 auto; 
+    display: table;
+}

@@ -5,3 +5,10 @@ body {
 
 }
 
+@media (min-width: 500px ) { 
+      body { 
+        /* width: 80%; */
+        padding-left: 10%;
+        padding-right: 10%;
+      }
+}
