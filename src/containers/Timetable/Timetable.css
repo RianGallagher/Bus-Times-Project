@@ -1,3 +1,4 @@
+
 h6 { 
     text-align: center;
     font-size: -webkit-xxx-large;
@@ -5,3 +6,29 @@ h6 {
     color: goldenrod;
     font-family: courier new;
 }
+
+.center {
+    text-align: center;
+    margin: auto;
+    width: 50%;
+    border: 2px solid #274374;
+    background-color: #fbe72a;
+    padding: 10px;
+  }
+  
+  #timetable-container {
+    display: flex;
+  }
+  
+  .timetable {
+    width: 50%;
+    background:rgba(255,255,255,0.7);
+  }
+  
+  html { 
+    /* background: url(./images/image.jpg) no-repeat center center fixed;   */
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+  }
