@@ -3,6 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 
 import Layout from './hoc/Layout/Layout';
 import Timetable from './containers/Timetable/Timetable';
+import LiveTimetable from './containers/LiveTimetable/LiveTimetable';
 import Auth from './containers/Auth/Auth';
 
 class App extends Component {
@@ -11,8 +12,9 @@ class App extends Component {
       <div>
            <Layout>
           <Switch>
-            <Route path="/auth" component={Auth} />
-            <Route path="/" component={Timetable} />
+            <Route path="/livetimes" component={LiveTimetable} />
+            <Route path="/times" component={Timetable} />
+            <Route path="/auth" component={Auth} />        
           </Switch>
           </Layout> 
       </div>

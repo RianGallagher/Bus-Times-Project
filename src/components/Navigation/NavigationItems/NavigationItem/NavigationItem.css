@@ -6,17 +6,19 @@
 }
 
 .NavigationItem a {
-    color: red;
+    color: white;
     text-decoration: none;
     width: 100%;
     box-sizing: border-box;
     display: block;
 }
 
-.NavigationItem a:hover,
+.NavigationItem a:hover{
+    color:  goldenrod
+}
 .NavigationItem a:active,
 .NavigationItem a.active {
-    color: red;
+    color: firebrick ;
 }
 
 @media (min-width: 500px) {
@@ -36,14 +38,15 @@
     }
     
     .NavigationItem a:hover {
-        background-color: lightblue;
+        background-color: gainsboro;
         border-bottom: none;
-        color: white;
+        color: grey;
     }
     .NavigationItem a:active,
     .NavigationItem a.active {
-        background-color: lightgreen;
-        border-bottom: 2px outset black;
+         background-color: darkgray; 
+         box-shadow: 0 2px 48px rgba(0,0,0,0.40);
+        border-bottom: 3px outset gold;
         color: white;
     }
 }
