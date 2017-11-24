@@ -50,11 +50,11 @@
 
 .timetable {
   width: 50%;
-  background-color: azure;
+  background:rgba(255,255,255,0.7);
 }
 
 html { 
-  background: url(images/fermi70.png) no-repeat center center fixed; 
+  background: url(images/image.jpg) no-repeat center center fixed; 
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
