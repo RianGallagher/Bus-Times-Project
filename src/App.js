@@ -1,77 +1,27 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import axios from 'axios';
-import ReactTable from 'react-table'
-import 'react-table/react-table.css'
+import  React, { Component } from 'react';
+import { Route, Switch } from 'react-router-dom';
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
+import Layout from './hoc/Layout/Layout';
+import Timetable from './containers/Timetable/Timetable';
+import LiveTimetable from './containers/LiveTimetable/LiveTimetable';
+import Auth from './containers/Auth/Auth';
+import Notification from './containers/Notification/Notification';
 
-    this.state = {
-      results: [],
-      busStopNumber: ''
-    };
-
-    // For entering bus stop numbers: https://reactjs.org/docs/forms.html
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
-  handleChange(event) {
-    this.setState({ busStopNumber: event.target.value });
-  }
-
-  handleSubmit(event) {
-    axios.get(`https://data.dublinked.ie/cgi-bin/rtpi/realtimebusinformation?stopid=${this.state.busStopNumber}&format=json`)
-    .then(res => {
-      const results = res.data.results;
-      this.setState({ results });
-    });
-    event.preventDefault();
-  }
-
-  componentDidMount() {
-  }
-
-  render() {
-    const columns = [{
-      Header: 'Route',
-      accessor: 'route' // String-based value accessors!
-    },
-    {
-      Header: 'Origin',
-      accessor: 'origin' // String-based value accessors!
-    },
-    {
-      Header: 'Destination',
-      accessor: 'destination' // String-based value accessors!
-    },
-    {
-      Header: 'Due In (Minutes)',
-      accessor: 'duetime' // String-based value accessors!
-    }]
+class App extends Component {
+  render () {
     return (
       <div>
-        <form onSubmit={this.handleSubmit}>
-          <label>
-            Bus Stop Number:
-          <input type="text" value={this.state.busStopNumber} onChange={this.handleChange} />
-          </label>
-          <input type="submit" value="Go" />
-        </form>
-        <ReactTable
-          data={this.state.results}
-          columns={columns}
-        />
+          <Layout>
+          <Switch>
+			<Route path="/Notification" component={Notification} />
+            <Route path="/livetimes" component={LiveTimetable} />
+            <Route path="/times" component={Timetable} />
+            <Route path="/auth" component={Auth} />
+          </Switch>
+          </Layout>
       </div>
     );
   }
 }
-
-ReactDOM.render(
-  <App />,
-  document.getElementById('root')
-);
 
 export default App;
