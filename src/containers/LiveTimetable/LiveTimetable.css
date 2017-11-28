@@ -15,3 +15,9 @@ label {
     margin: 0 auto; 
     display: table;
 }
+@media (max-width: 499px )  { 
+    label { 
+    margin: 0 auto; 
+    display: table;
+    }
+}
