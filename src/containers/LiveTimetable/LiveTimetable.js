@@ -1,6 +1,5 @@
 import React from 'react';
 import axios from 'axios';
-//import './index.js';
 import * as firebase from 'firebase';
 import ReactTable from 'react-table';
 import classes from 'react-table/react-table.css'
@@ -13,12 +12,7 @@ class Timetable extends React.Component {
 
         this.state = {
             results: [],
-            busStopNumber: '312',
-            route: '',
-            destination: '',
-            oirigin: '',
-            duetime: '',
-            speed: ''
+            busStopNumber: '312'
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -27,8 +21,6 @@ class Timetable extends React.Component {
     }
 
     handleChange() {
-        //this.setState({ busStopNumber: event.target.value });
-
         this.setState({busStopNumber : document.getElementById('stopNum').value});
 
     }
@@ -59,12 +51,10 @@ class Timetable extends React.Component {
     }
 
     displayTimes(){
-        //setTimeout(() => {
         const stopRef = firebase.database().ref().child(this.state.busStopNumber);
         stopRef.on('value', snapshot =>{
             this.setState({results: snapshot.val()});
         });
-        //}, 600);
     }
 
     

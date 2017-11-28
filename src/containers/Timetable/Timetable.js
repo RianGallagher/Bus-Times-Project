@@ -1,6 +1,4 @@
 import React from 'react';
-import axios from 'axios';
-//import './index.js';
 import * as firebase from 'firebase';
 import ReactTable from 'react-table';
 import classes from 'react-table/react-table.css'
