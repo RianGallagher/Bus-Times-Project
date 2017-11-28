@@ -5,3 +5,20 @@ body {
 
 }
 
+.center {
+    text-align: center;
+    margin: auto;
+    width: 50%;
+    border: 2px solid #274374;
+    background-color: #fbe72a;
+    padding: 10px;
+  }
+  
+  .timetable-container {
+    display: flex;
+  }
+  
+  .timetable {
+    width: 50%;
+    background:rgba(255,255,255,0.7);
+  }

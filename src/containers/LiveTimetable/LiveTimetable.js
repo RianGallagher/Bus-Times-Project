@@ -78,14 +78,14 @@ class Timetable extends React.Component {
         return (
             <div>
                 <form onSubmit={this.startTimer}>
-                    <h6 className="textReal">Live Timetable</h6>
-                   
+                    <h6 className="textReal">Live Timetable</h6>                  
                     <hr/>
                     <label>
                         Enter Bus Stop Number:
                         <input id="stopNum" type="text" />
+                         <input type="submit" value="Go" onClick={this.handleChange}/>
                     </label>
-                    <input type="submit" value="Go" onClick={this.handleChange}/>
+                   
                 </form>
                 <ReactTable
                     data={this.state.results}

@@ -1,12 +1,16 @@
-.Logo {
-    
-background-color: grey;
+.Logo {  
+background-color: transparent;
 padding: 8px;
 height: 100%;
 box-sizing: border-box;
 border-radius: 5px;
 }
 
+@media (max-width: 499px) { 
+    .Logo { 
+        background-color: transparent;
+    }
+}
 
 .Logo img {
 height: 100%;

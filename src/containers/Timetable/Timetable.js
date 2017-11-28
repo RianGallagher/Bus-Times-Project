@@ -4,7 +4,7 @@ import axios from 'axios';
 import * as firebase from 'firebase';
 import ReactTable from 'react-table';
 import classes from 'react-table/react-table.css'
-import './Timetable.css'
+import  './Timetable.css'
 
 
 class Timetable extends React.Component {
@@ -122,7 +122,8 @@ class Timetable extends React.Component {
                 accessor: 'sundayTime2' // String-based value accessors!
             }]
         return (
-            <div>
+
+            <div className="test">
                 <h6 className="textReal">Timetable</h6>
                 <hr/>
                 {/* <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit,
@@ -131,33 +132,35 @@ class Timetable extends React.Component {
                   Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
                    Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p> */}
                 <div>
-                    <form>
-                        <label>
-                            Bus Route Number:
-                            <input id="stopNum" type="text" />
-                        </label>
+                </div>
+                <form >
+                    <label >
+                        Enter Bus Route Number:
+                        <input id="stopNum" type="text" />
                         <input type="submit" value="Go" onClick={this.doSubmit}/>
-                    </form>
-                    <div id="timetable-container">
-                        <div class="timetable">
-                            <div class="center"><strong>{this.state.heading1}</strong></div>
-                            <ReactTable
-                                data={this.state.data}
-                                columns={columns1}
-                                sortable={false}
-                            />
-                        </div>
-                        <div class="timetable">
-                            <div class="center"><strong>{this.state.heading2}</strong></div>
-                            <ReactTable
-                                data={this.state.data}
-                                columns={columns2}
-                                sortable={false}
-                            />
-                        </div>
+                    </label>
+
+                </form>
+                <div className="timetable-container" style={{display: "flex"}} >
+                    <div className="timetable" style={{width: "50%"}}>
+                        <div className="center" style={{textAlign: "center", margin: "auto", width: "50%"}}><strong>{this.state.heading1}</strong></div>
+                        <ReactTable
+                            data={this.state.data}
+                            columns={columns1}
+                            sortable={false}
+                        />
+                    </div>
+                    <div className="timetable" style={{width: "50%"}}>
+                        <div className="center" style={{textAlign: "center", margin: "auto", width: "50%"}}><strong>{this.state.heading2}</strong></div>
+                        <ReactTable
+                            data={this.state.data}
+                            columns={columns2}
+                            sortable={false}
+                        />
                     </div>
                 </div>
             </div>
+
         );
     }
 }
