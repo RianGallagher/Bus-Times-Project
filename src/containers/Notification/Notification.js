@@ -105,14 +105,17 @@ class Notification extends Component
                     ))}
                 </div>
 
-                <div className="but">
-                    <button onClick={() => this.timer.start()} className="start">
-                        Start
+                <div style={{margin: "0 auto", textAlign: "center" }}>
+                    <button onClick={() => this.timer.start()} >
+                        Start Notification
                     </button>
 
-                    <button onClick={() => this.timer.stop()} className="stop">
-                        Stop
+                    <button onClick={() => this.timer.stop()} >
+                        Stop Notification
                     </button>
+
+                    <br />
+                    <br />
 
                     <button onClick={() => this.stopSound()} className="pause">
                         Pause Sound
