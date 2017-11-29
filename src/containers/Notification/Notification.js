@@ -10,24 +10,11 @@ class Notification extends Component
     {
         super();
 
-        this.state = { time: '10:00', playing: false, show: false }
+        this.state = { time: '10:00', playing: false, }
         this.handlePlay = this.handlePlay.bind(this);
-        this.doSomething = this.doSomething.bind(this);
-        this.toggleShow = this.toggleShow.bind(this);
     }
 
     notify = () => toast("Time to go and catch that bus!");
-
-    doSomething(e)
-    {
-        e.preventDefault();
-        console.log(e.target.innerHTML);
-    }
-
-    toggleShow()
-    {
-        this.setState ({show: !this.state.show});
-    }
 
     handlePlay()
     {
@@ -44,6 +31,11 @@ class Notification extends Component
         {
             this.setState ({ playing: true })
         }
+    }
+
+    stopSound()
+    {
+        this.setState ({ playing: false })
     }
 
     componentDidMount()
@@ -83,71 +75,68 @@ class Notification extends Component
     {
         const { showing } = this.state;
 
-        return(
-            <div className="container">
-                <div classname="focus">
-                    <h6 className="textReal">Set Notification</h6>
+        return <div className="container">
+            <div classname="focus">
+                <h6 className="textReal">Set Notification</h6>
 
-                    <hr/>
-                    <br></br>
-                    <br></br>
-                    <br></br>
+                <hr/>
+                <br></br>
+                <br></br>
+                <br></br>
 
-                    <div classname="time">
-                        {this.state.time}
-                    </div>
-
-                    <div classname="controls">
-                        {[ 'mm:ss' ].map(formatOutput => (
-                            <label>
-                                <span>{formatOutput}</span>
-                                <input
-                                    onChange={ev =>
-                                    {
-                                        return this.handleChange(formatOutput, ev.target.value);
-                                    }}
-                                    type="range"
-                                    min="1"
-                                    max="1200"
-                                    defaultValue="600"
-                                />
-                            </label>
-                        ))}
-                        </div>
-
-                        <div className="but">
-                            <button onClick={() => this.timer.start()} className="start">
-                                Start
-                            </button>
-
-                            <button onClick={() => this.timer.stop()} className="stop">
-                                Stop
-                            </button>
-
-                            <button onClick={() => this.timer.pause()} className="pause">
-                                Pause Sound
-                            </button>
-                        </div>
-
-                    <ToastContainer
-                        position="top-right"
-                        type="default"
-                        autoClose={16000}
-                        hideProgressBar={false}
-                        newestOnTop
-                        closeOnClick
-                        pauseOnHover
-                    />
-
-                    <ReactHowler
-                        src="http://www.freesfx.co.uk/rx2/mp3s/6/18146_1464355204.mp3"
-                        playing={this.state.playing}
-                        ref={(ref) => (this.player = ref)}
-                    />
-
+                <div style={{margin: "0 auto", textAlign: "center", fontSize: "100px"}}>
+                    {this.state.time}
                 </div>
+
+                <div classname="controls">
+                    {['mm:ss'].map(formatOutput => (
+                        <label>
+                            <span>{formatOutput}</span>
+                            <input
+                                onChange={ev => {
+                                    return this.handleChange(formatOutput, ev.target.value);
+                                }}
+                                type="range"
+                                min="1"
+                                max="1200"
+                                defaultValue="600"
+                            />
+                        </label>
+                    ))}
+                </div>
+
+                <div className="but">
+                    <button onClick={() => this.timer.start()} className="start">
+                        Start
+                    </button>
+
+                    <button onClick={() => this.timer.stop()} className="stop">
+                        Stop
+                    </button>
+
+                    <button onClick={() => this.stopSound()} className="pause">
+                        Pause Sound
+                    </button>
+                </div>
+
+                <ToastContainer
+                    position="bottom-right"
+                    type="default"
+                    autoClose={16000}
+                    hideProgressBar={false}
+                    newestOnTop
+                    closeOnClick
+                    pauseOnHover
+                />
+
+                <ReactHowler
+                    src="http://www.freesfx.co.uk/rx2/mp3s/6/18146_1464355204.mp3"
+                    playing={this.state.playing}
+                    ref={(ref) => (this.player = ref)}
+                />
+
             </div>
-        );
+        </div>
     }
 }
 
