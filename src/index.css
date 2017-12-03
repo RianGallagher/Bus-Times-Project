@@ -5,6 +5,9 @@ body {
 
 }
 
+.rt-resizable-header{
+	display:inline-flex;
+}
 .center {
     text-align: center;
     margin: auto;

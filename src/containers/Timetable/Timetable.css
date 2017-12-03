@@ -1,3 +1,6 @@
+.rt-resizable-header{
+  display:inline-flex;
+}  
 
 .center {
     text-align: center;
@@ -55,4 +58,3 @@ label {
     margin: 0 auto; 
     display: table;
     }
-}
