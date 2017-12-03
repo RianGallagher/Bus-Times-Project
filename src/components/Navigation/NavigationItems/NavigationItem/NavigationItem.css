@@ -6,17 +6,19 @@
 }
 
 .NavigationItem a {
-    color: #8F5C2C;
+    color: dimgrey;
     text-decoration: none;
     width: 100%;
     box-sizing: border-box;
     display: block;
 }
 
-.NavigationItem a:hover,
+.NavigationItem a:hover{
+    color:  firebrick;
+}
 .NavigationItem a:active,
 .NavigationItem a.active {
-    color: #40A4C8;
+    color: goldenrod ;
 }
 
 @media (min-width: 500px) {
@@ -32,14 +34,20 @@
         color: white;
         height: 100%;
         padding: 16px 10px;
-        border-bottom: 4px solid transparent;
+        border-bottom: none;
     }
     
-    .NavigationItem a:hover,
+    .NavigationItem a:hover {
+        background-color: gainsboro;
+        border-bottom: none;
+        color: grey;
+    }
     .NavigationItem a:active,
     .NavigationItem a.active {
-        background-color: #8F5C2C;
-        border-bottom: 4px solid #40A4C8;
-        color: white;
+         /* background-color: darkgray;  */
+         background-color: white;
+         box-shadow: 0 2px 48px rgba(0,0,0,0.40);
+        border-bottom: 3px outset gold;
+        color: grey;
     }
 }

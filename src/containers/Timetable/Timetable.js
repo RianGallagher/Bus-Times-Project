@@ -4,100 +4,163 @@ import axios from 'axios';
 import * as firebase from 'firebase';
 import ReactTable from 'react-table';
 import classes from 'react-table/react-table.css'
+import  './Timetable.css'
+
 
 class Timetable extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            results: [],
-            busStopNumber: '312',
-            route: '',
-            destination: '',
-            oirigin: '',
-            duetime: '',
-            speed: ''
+            heading1: '',
+            heading2: ''
         };
 
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.startTimer = this.startTimer.bind(this);
+
+        this.doSubmit = this.doSubmit.bind(this);
+        this.displayTimetime = this.displayTimetable.bind(this);
     }
 
-    handleChange() {
-        //this.setState({ busStopNumber: event.target.value });
-
-        this.setState({busStopNumber : document.getElementById('stopNum').value});
-
-    }
-
-    startTimer(event){
+    doSubmit(event) {
+        var temp = [-1], data = [];
         event.preventDefault();
-        this.handleSubmit();
-        setInterval(this.handleSubmit, 10000);
-    }
+        console.log("in handle change");
+        var num = document.getElementById('stopNum').value;
+        console.log(num);
+        let myProm = new Promise(function(resolve, reject) {
+            const stopRef = firebase.database().ref().child("timetable").child(num);
+            stopRef.on('value', snapshot =>{
+                temp = [null];
+                temp = snapshot.val();
 
-    handleSubmit() {
-
-        axios.get(`https://data.dublinked.ie/cgi-bin/rtpi/realtimebusinformation?stopid=${this.state.busStopNumber}&format=json`)
-            .then(res => {
-                console.log("refreshing times");
-                //Make it read from Database instead of setting state
-                const results = res.data.results;
-                //this.setState({ results: results });
-                const stopRef = firebase.database().ref().child(this.state.busStopNumber);
-                for (var i = 0; i < results.length; i++) {
-                    stopRef.child(i).child("duetime").set(results[i].duetime);
-                    stopRef.child(i).child("route").set(results[i].route);
-                    stopRef.child(i).child("destination").set(results[i].destination);
-                    stopRef.child(i).child("origin").set(results[i].origin);
+            });
+            setTimeout(function(){
+                if (temp!==undefined) {
+                    resolve(temp);
+                } else {
+                    reject('Error');
                 }
-            })
-            .then(this.displayTimes());
-    }
-
-    displayTimes(){
-        //setTimeout(() => {
-        const stopRef = firebase.database().ref().child(this.state.busStopNumber);
-        stopRef.on('value', snapshot =>{
-            this.setState({results: snapshot.val()});
+            },1200);
         });
-        //}, 600);
+        myProm.then((fromResolve) =>
+            this.displayTimetable(fromResolve)
+        ).catch(function(fromReject){
+            alert(num + " is not a bus route");
+        })
+
     }
 
+    displayTimetable(fromResolve){
+        var data = [];
+        console.log(fromResolve)
+        if(fromResolve[2]!==undefined){
+            var longestArrayLength = Math.max(fromResolve[1].weekdays.length, fromResolve[1].saturday.length, fromResolve[1].sunday.length, fromResolve[2].weekdays.length, fromResolve[2].saturday.length,fromResolve[2].sunday.length);
+            for (var i = 0; i < longestArrayLength; i++) {
 
+                data.push({
+                    "weekdayTime1":fromResolve[1].weekdays[i],
+                    "saturdayTime1": fromResolve[1].saturday[i],
+                    "sundayTime1": fromResolve[1].sunday[i],
+                    "weekdayTime2": fromResolve[2].weekdays[i],
+                    "saturdayTime2": fromResolve[2].saturday[i],
+                    "sundayTime2": fromResolve[2].sunday[i]
+                });
+            }
+            this.setState({heading1: fromResolve[1].heading, heading2: fromResolve[2].heading});
+            console.log(this.state.heading1);
+        }
+        else{
+            var longestArrayLength = Math.max(fromResolve[1].weekdays.length, fromResolve[1].saturday.length, fromResolve[1].sunday.length);
+            for (var i = 0; i < longestArrayLength; i++) {
+
+                data.push({
+                    "weekdayTime1":fromResolve[1].weekdays[i],
+                    "saturdayTime1": fromResolve[1].saturday[i],
+                    "sundayTime1": fromResolve[1].sunday[i],
+                    "weekdayTime2": "-",
+                    "saturdayTime2": "-",
+                    "sundayTime2": "-"
+                });
+            }
+            this.setState({heading1: fromResolve[1].heading, heading2: "No Service"});
+            console.log(this.state.heading1);
+        }
+
+        this.setState({ data });
+
+        console.dir(data);
+    }
     render() {
-        const columns = [{
-            Header: 'Route',
-            accessor: 'route' // String-based value accessors!
+        const columns1 = [{
+            id: 'weekdays',
+            Header: 'Weekdays',
+            accessor: 'weekdayTime1' // Custom value accessors!
         },
             {
-                Header: 'Origin',
-                accessor: 'origin' // String-based value accessors!
+                id: 'saturdays',
+                Header: 'Saturdays',
+                accessor: 'saturdayTime1' // String-based value accessors!
             },
             {
-                Header: 'Destination',
-                accessor: 'destination' // String-based value accessors!
+                id: 'sundays',
+                Header: 'Sundays',
+                accessor: 'sundayTime1' // String-based value accessors!
+            }]
+        const columns2 = [{
+            id: 'weekdays',
+            Header: 'Weekdays',
+            accessor: 'weekdayTime2' // Custom value accessors!
+        },
+            {
+                id: 'saturdays',
+                Header: 'Saturdays',
+                accessor: 'saturdayTime2' // String-based value accessors!
             },
             {
-                Header: 'Due In (Minutes)',
-                accessor: 'duetime' // String-based value accessors!
-            }];
+                id: 'sundays',
+                Header: 'Sundays',
+                accessor: 'sundayTime2' // String-based value accessors!
+            }]
         return (
-            <div>
-                <form onSubmit={this.startTimer}>
-                    <label>
-                        Bus Stop Number:
+
+            <div className="test">
+                <h6 className="textReal">Timetable</h6>
+                <hr/>
+                {/* <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                 Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                  Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                   Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p> */}
+                <div>
+                </div>
+                <form >
+                    <label >
+                        Enter Bus Route Number:
                         <input id="stopNum" type="text" />
+                        <input type="submit" value="Go" onClick={this.doSubmit}/>
                     </label>
-                    <input type="submit" value="Go" onClick={this.handleChange}/>
+
                 </form>
-                <ReactTable
-                    data={this.state.results}
-                    columns={columns}
-                    className={classes.ReactTable}
-                />
+                <div className="timetable-container" style={{display: "flex"}} >
+                    <div className="timetable" style={{width: "50%"}}>
+                        <div className="center" style={{textAlign: "center", margin: "auto", width: "50%"}}><strong>{this.state.heading1}</strong></div>
+                        <ReactTable
+                            data={this.state.data}
+                            columns={columns1}
+                            sortable={false}
+                        />
+                    </div>
+                    <div className="timetable" style={{width: "50%"}}>
+                        <div className="center" style={{textAlign: "center", margin: "auto", width: "50%"}}><strong>{this.state.heading2}</strong></div>
+                        <ReactTable
+                            data={this.state.data}
+                            columns={columns2}
+                            sortable={false}
+                        />
+                    </div>
+                </div>
             </div>
+
         );
     }
 }

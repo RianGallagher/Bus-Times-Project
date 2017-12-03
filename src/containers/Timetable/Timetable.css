@@ -1,3 +1,60 @@
 .rt-resizable-header{
-display:inline-flex;
+  display:inline-flex;
+}  
+
+.center {
+    text-align: center;
+    margin: auto;
+    width: 50%;
+    border: 2px solid #274374;
+    background-color: #fbe72a;
+    padding: 10px;
+  }
+  
+  .timetable-container {
+    display: flex;
+  }
+  
+  .timetable {
+    width: 50%;
+    background:rgba(255,255,255,0.7);
+  }
+
+ 
+ h6 { 
+    text-align: center;
+    font-size: 40px;
+    margin-bottom: 40px;
+    color: goldenrod;
+    font-family: courier new;
+} 
+ /* .textReal { 
+    text-align: center;
+    font-size: 40px;
+    margin-bottom: 40px;
+    color: goldenrod;
+    font-family: courier new; }*/
+
+.test {
+  background-color: blueviolet;
+  margin: 0 auto; 
+  display: absolute;
 }
+
+/*   
+   html { 
+  background: url(./images/image.jpg) no-repeat center center fixed;   
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+  }  */
+label { 
+    margin: 0 auto; 
+    display: table;
+}
+@media (max-width: 499px )  { 
+    label { 
+    margin: 0 auto; 
+    display: table;
+    }

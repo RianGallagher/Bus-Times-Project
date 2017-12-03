@@ -1,10 +1,11 @@
 import React from 'react';
 
-// import Logo from '../../Logo/Logo';
+import Logo from '../../Logo/Logo';
 import NavigationItems from '../NavigationItems/NavigationItems';
 import classes from './SideDrawer.css';
 import Backdrop from '../../UI/Backdrop/Backdrop';
 import Aux from '../../../hoc/_Aux/_Aux';
+
 
 const sideDrawer = ( props ) => {
     let attachedClasses = [classes.SideDrawer, classes.Close];
@@ -15,11 +16,11 @@ const sideDrawer = ( props ) => {
         <Aux>
             <Backdrop show={props.open} clicked={props.closed}/>
             <div className={attachedClasses.join(' ')}>
-                <div className={classes.Logo}>
-                    {/* <Logo /> */}
+                <div className={classes.Logo}  >
+                     <Logo style={{backgroundColor: "whitesmoke", color: "whitesmoke"}} /> 
                 </div>
                 <nav>
-                    <NavigationItems />
+                    <NavigationItems/>
                 </nav>
             </div>
         </Aux>

@@ -10,17 +10,18 @@
     -->
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
     <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
+
 	<link rel="stylesheet" href="node_modules/react-table/react-table.css">
- +
- +     <!-- CSS -->
- +  <link rel="stylesheet" href="https://unpkg.com/react-table@latest/react-table.css">
- +
- +  <!-- JS -->
- +  <script src="https://unpkg.com/react-table@latest/react-table.js"></script>
- +
- +  <script>
- +    var ReactTable = window.ReactTable.default
- +</script>
+ 
+      <!-- CSS -->
+   <link rel="stylesheet" href="https://unpkg.com/react-table@latest/react-table.css">
+ 
+   <!-- JS -->
+   <script src="https://unpkg.com/react-table@latest/react-table.js"></script>
+ 
+   <script>
+     var ReactTable = window.ReactTable.default
+ </script>
  <!-- Google Maps API Load -->
  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAayHuExZVJfG-xzEOAFt7uij-ony5dLK8&libraries=places&callback=initMap" async defer></script>
     <!--
