@@ -9,6 +9,7 @@ const navigationItems = () => (
         <NavigationItem link="/times">Timetable</NavigationItem>
         <NavigationItem link="/auth">Authenticate</NavigationItem>
 		<NavigationItem link="/Map"> Bus Stops near Me!</NavigationItem>
+		<NavigationItem link="/Social"> Social Media</NavigationItem>
     </ul>
 );
 

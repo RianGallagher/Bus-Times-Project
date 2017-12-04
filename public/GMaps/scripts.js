@@ -34,22 +34,26 @@ function getLocation(){
 }
 
 function initMap2(){
-		document.getElementById("myButton").setAttribute("onClick","initMap2();");
-		map = new google.maps.Map(document.getElementById('map'), {
+	document.getElementById("myButton").setAttribute("onClick","initMap2();");
+	map = new google.maps.Map(document.getElementById('map'), {
         center: myLocation,
         zoom: 15
-      });
-
-      infowindow = new google.maps.InfoWindow();
-      var service = new google.maps.places.PlacesService(map);
-      var request = {
+    });
+	
+	google.maps.event.addListener(map, 'bounds_changed', function() {
+		resizeMap();		//Resizes maps when the map view is resized
+	});
+    
+	infowindow = new google.maps.InfoWindow();
+	var service = new google.maps.places.PlacesService(map);
+	var request = {
         location: myLocation,
         radius: '500',
         query: 'bus_station',
 		type: 'bus_station'
-      }; service.nearbySearch(request, callback);
-	  console.log("Map Created");
-    }
+    }; service.nearbySearch(request, callback);
+	console.log("Map Created");
+}
   function callback(results, status) {
     if (status === google.maps.places.PlacesServiceStatus.OK) {
       for (var i = 0; i < results.length; i++) {
