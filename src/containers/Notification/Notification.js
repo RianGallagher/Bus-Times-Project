@@ -76,7 +76,7 @@ class Notification extends Component
         const { showing } = this.state;
 
         return <div className="container">
-            <div classname="focus">
+            <div className="focus">
                 <h6 className="textReal">Set Notification</h6>
 
                 <hr/>
@@ -88,7 +88,7 @@ class Notification extends Component
                     {this.state.time}
                 </div>
 
-                <div classname="controls">
+                <div className="controls">
                     {['mm:ss'].map(formatOutput => (
                         <label>
                             <span>{formatOutput}</span>
