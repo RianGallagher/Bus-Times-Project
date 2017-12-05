@@ -48,7 +48,7 @@ function initMap2(){
 	var service = new google.maps.places.PlacesService(map);
 	var request = {
         location: myLocation,
-        radius: '500',
+        radius: '1000',
         query: 'bus_station',
 		type: 'bus_station'
     }; service.nearbySearch(request, callback);
