@@ -71,6 +71,7 @@ function initMap2(){
      infowindow.setContent("<p style=color:#000000>My Location</p>");
       infowindow.open(map, this);
     });
+	addTransitLayer();
 	//createButton();
   }
  function createMarker(place) {
@@ -86,10 +87,13 @@ function initMap2(){
     });
 
     google.maps.event.addListener(marker, 'click', function() {
-      infowindow.setContent("<p style=color:#000000>"+place.name+"</p>");
+	  var myInfo="<img src='https://maps.gstatic.com/mapfiles/place_api/icons/bus-71.png' height='25px' width='25px'/><p style=color:#000000>"+place.name+"</p>";
+      infowindow.setContent(myInfo);
       infowindow.open(map, this);
+	  
     });
 	console.log("Marker created");
+	console.log(place);
 }
   
   function locationError(error) {

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
+//import ReactDOM from 'react-dom';
 import { Timeline } from 'react-twitter-widgets'
 //https://github.com/andrewsuzuki/react-twitter-widgets/blob/HEAD/site/screenshot.png
 //https://www.npmjs.com/package/react-twitter-widgets
