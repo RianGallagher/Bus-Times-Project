@@ -1,0 +1,14 @@
+.socialContainer{
+	width: 80%;
+    height: auto;
+    margin: 0 auto;
+    padding: 10px;
+}
+
+.twitter{
+	float:left
+}
+
+.facebook{
+	margin-left:30px;
+}
