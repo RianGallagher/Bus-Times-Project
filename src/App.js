@@ -6,8 +6,8 @@ import Timetable from './containers/Timetable/Timetable';
 import LiveTimetable from './containers/LiveTimetable/LiveTimetable';
 import Auth from './containers/Auth/Auth';
 import Container from './containers/Map/Container';
-import SocialContainer from './containers/Social/Container';
 import Notification from './containers/Notification/Notification';
+import SocialContainer from './containers/Social/Container';
 
 class App extends Component {
   render () {
