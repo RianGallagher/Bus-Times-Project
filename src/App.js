@@ -6,12 +6,9 @@ import Timetable from './containers/Timetable/Timetable';
 import LiveTimetable from './containers/LiveTimetable/LiveTimetable';
 import Auth from './containers/Auth/Auth';
 import Container from './containers/Map/Container';
-<<<<<<< HEAD
 import SocialContainer from './containers/Social/Container';
-=======
 import Notification from './containers/Notification/Notification';
 
->>>>>>> refs/remotes/origin/master
 class App extends Component {
   render () {
     return (
