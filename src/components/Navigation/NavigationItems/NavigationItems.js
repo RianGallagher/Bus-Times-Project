@@ -10,6 +10,7 @@ const navigationItems = () => (
         <NavigationItem link="/Notification">Set Notification</NavigationItem>
         <NavigationItem link="/auth">Authenticate</NavigationItem>
 		<NavigationItem link="/Map"> Bus Stops near Me!</NavigationItem>
+		<NavigationItem link="/Social"> Social Media</NavigationItem>
     </ul>
 );
 

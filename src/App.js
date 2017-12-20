@@ -7,6 +7,7 @@ import LiveTimetable from './containers/LiveTimetable/LiveTimetable';
 import Auth from './containers/Auth/Auth';
 import Container from './containers/Map/Container';
 import Notification from './containers/Notification/Notification';
+import SocialContainer from './containers/Social/Container';
 
 class App extends Component {
   render () {
@@ -19,6 +20,7 @@ class App extends Component {
                 <Route path="/auth" component={Auth} />
                 <Route path="/Map" component={Container} />
                 <Route path="/Notification" component={Notification} />
+				<Route path="/social" component={SocialContainer} />
            </Switch>
            </Layout>
       </div>

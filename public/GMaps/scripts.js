@@ -34,22 +34,26 @@ function getLocation(){
 }
 
 function initMap2(){
-		document.getElementById("myButton").setAttribute("onClick","initMap2();");
-		map = new google.maps.Map(document.getElementById('map'), {
+	document.getElementById("myButton").setAttribute("onClick","initMap2();");
+	map = new google.maps.Map(document.getElementById('map'), {
         center: myLocation,
         zoom: 15
-      });
-
-      infowindow = new google.maps.InfoWindow();
-      var service = new google.maps.places.PlacesService(map);
-      var request = {
+    });
+	
+	google.maps.event.addListener(map, 'bounds_changed', function() {
+		resizeMap();		//Resizes maps when the map view is resized
+	});
+    
+	infowindow = new google.maps.InfoWindow();
+	var service = new google.maps.places.PlacesService(map);
+	var request = {
         location: myLocation,
-        radius: '500',
+        radius: '1000',
         query: 'bus_station',
 		type: 'bus_station'
-      }; service.nearbySearch(request, callback);
-	  console.log("Map Created");
-    }
+    }; service.nearbySearch(request, callback);
+	console.log("Map Created");
+}
   function callback(results, status) {
     if (status === google.maps.places.PlacesServiceStatus.OK) {
       for (var i = 0; i < results.length; i++) {
@@ -67,6 +71,7 @@ function initMap2(){
      infowindow.setContent("<p style=color:#000000>My Location</p>");
       infowindow.open(map, this);
     });
+	addTransitLayer();
 	//createButton();
   }
  function createMarker(place) {
@@ -82,10 +87,13 @@ function initMap2(){
     });
 
     google.maps.event.addListener(marker, 'click', function() {
-      infowindow.setContent("<p style=color:#000000>"+place.name+"</p>");
+	  var myInfo="<img src='https://maps.gstatic.com/mapfiles/place_api/icons/bus-71.png' height='25px' width='25px'/><p style=color:#000000>"+place.name+"</p>";
+      infowindow.setContent(myInfo);
       infowindow.open(map, this);
+	  
     });
 	console.log("Marker created");
+	console.log(place);
 }
   
   function locationError(error) {
